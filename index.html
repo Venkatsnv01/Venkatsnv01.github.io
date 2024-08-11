@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>venkat raghav</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            color: #000;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .header img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-weight: bold;
+            margin: 0;
+        }
+
+        nav {
+            margin: 20px 0;
+        }
+
+        nav a {
+            color: #000;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            display: none;
+            margin: 20px 0;
+            padding: 0 20px;
+            width: 100%;
+            max-width: 850px;
+            overflow: hidden;
+        }
+
+        .active {
+            display: block;
+        }
+
+        ::selection {
+            background: #000;
+            color: #fff;
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                flex-direction: column;
+            }
+
+            .header img {
+                margin-bottom: 10px;
+            }
+
+            nav a {
+                display: block;
+                margin: 10px 0;
+            }
+
+            iframe {
+                height: 300px;
+            }
+        }
+
+        .secret {
+            display: none;
+        }
+
+        .embedded-doc * {
+            max-width: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <img src="images/raghav.png" alt="raghav">
+        <h1>venkat raghav</h1>
+    </div>
+
+    <nav>
+        <a href="#about" onclick="showSection('about')">about</a>
+        <a href="#work" onclick="showSection('work')">work</a>
+        <a href="#writings" onclick="showSection('writings')">writings</a>
+        <a href="mailto:youremail@example.com">email</a>
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">linkedIn</a>
+        <a href="https://twitter.com/yourprofile" target="_blank">twitter</a>
+    </nav>
+
+    <section id="about">
+        <h2>about</h2>
+        <p>this is the about section. Write something about yourself here.</p>
+    </section>
+
+    <section id="work">
+        <h2>work</h2>
+        <p>This is the work section. Describe your professional work here.</p>
+    </section>
+
+    <section id="writings">
+        <h2>Writings</h2>
+        <iframe id="writingsFrame" src="https://docs.google.com/document/d/e/2PACX-1vTe6tPq55E6PUJ9kalBXOWHGQAtNz8ixg-4yi5z0bbJhGhbBnNtBQcNGh0iaqOTsqkjx8LyBP-WUlie/pub?embedded=true"></iframe>
+    </section>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // START GDOCS UNEMBEDDING SCRIPT
+        var iframes = document.getElementsByTagName("iframe");
+        for (let i = 0; i < iframes.length; i++) {
+            var url = iframes[i].getAttribute("src");
+            console.log({ url });
+            if (url.startsWith("https://docs.google.com/document/d/")) {
+                // create div and replace iframe
+                let d = document.createElement('div');
+                d.classList.add("embedded-doc"); // optional
+
+                // CORS request
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onload = function () {
+                    // display response
+                    d.innerHTML = xhr.responseText;
+
+                    let scriptChildren = d.querySelectorAll('script');
+                    scriptChildren.forEach(script => {
+                        script.parentNode.removeChild(script);
+                    });
+
+                    let styleChildren = d.querySelectorAll('style');
+                    styleChildren.forEach(style => {
+                        const cssString = style.innerText;
+                        const modifiedCss = cssString.replace(/\}/g, '}.embedded-doc ');
+                        const lineSpacingFix = modifiedCss.replace(/\line-height/g, 'foo');
+                        style.innerHTML = lineSpacingFix;
+                    });
+
+                    // Add max-width: 100% to all sub-elements of 'd'
+                    let subElements = d.querySelectorAll('*');
+                    subElements.forEach(element => {
+                        element.style.maxWidth = '100%';
+                        element.style.removeProperty('height');
+
+                        if (element.tagName.toLowerCase() !== 'li') {
+                            element.style.overflow = 'hidden';
+                        }
+                    });
+
+                    iframes[i].parentElement.replaceChild(d, iframes[i]);
+                };
+                xhr.send();
+            }
+        }
+
+        function removeSecretClass() {
+            const divs = document.querySelectorAll('#secret');
+            divs.forEach(div => {
+                if (div.classList.contains('secret')) {
+                    div.classList.remove('secret');
+                } else {
+                    div.classList.add('secret');
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
