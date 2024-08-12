@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>venkat raghav</title>
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -35,6 +36,7 @@
         h1 {
             font-weight: bold;
             margin: 0;
+
         }
 
         nav {
@@ -58,7 +60,24 @@
             padding: 0 20px;
             width: 100%;
             max-width: 850px;
-            overflow: hidden;
+            text-align: justify;
+            
+        }
+        section h2{
+            text-align: center;
+        }
+        
+        section p{
+            margin-left: 10%;
+        }
+
+        section a {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        section a:hover {
+            color: #555;
         }
 
         .active {
@@ -74,8 +93,6 @@
             width: 100%;
             height: 500px;
             border: none;
-            overflow-x: hidden;
-            overflow-y: auto;
         }
 
         @media (max-width: 600px) {
@@ -97,10 +114,6 @@
             }
         }
 
-        .secret {
-            display: none;
-        }
-
         .embedded-doc * {
             max-width: 100%;
             overflow: hidden;
@@ -110,66 +123,64 @@
 <body>
 
     <div class="header">
-        <img src="images/raghav.png" alt="raghav">
-        <h1>venkat raghav</h1>
+        <img src="images/raghav.png" alt="Venkat Raghav">
+        <h1>hi, i’m venkat raghav</h1>
+    </div>
+    <div>
+        <p>ai arts and engineering</p>
     </div>
 
     <nav>
         <a href="#about" onclick="showSection('about')">about</a>
         <a href="#work" onclick="showSection('work')">work</a>
         <a href="#writings" onclick="showSection('writings')">writings</a>
-        <a href="mailto:youremail@example.com">email</a>
-        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">linkedIn</a>
-        <a href="https://twitter.com/yourprofile" target="_blank">twitter</a>
+        <a href="mailto:venkatsnv01@gmail.com">email</a>
+        <a href="https://www.linkedin.com/in/snvr-r" target="_blank">linkedIn</a>
+        <a href="https://x.com/raghavsnv" target="_blank">twitter</a>
     </nav>
 
-    <section id="about">
+    <section id="about" class="active">
         <h2>about</h2>
-        <p>this is the about section. Write something about yourself here.</p>
+        <p></p>
     </section>
 
     <section id="work">
         <h2>work</h2>
-        <p>This is the work section. Describe your professional work here.</p>
+        <p>> worked at <a href="https://www.mathco.com" target="_blank">mathco</a> in data science engineering</p>
+        <p>built ai tools that automated workflows and ml algorithms: clustering, time series, regression that drived decisions</p>
+        <br>
+        <p>previously..</p>
+        <p>> worked at <a href="https://www.klenty.com" target="_blank">klenty</a> in market research</p>
+        <p>> worked at <a href="https://www.urbancompany.com" target="_blank">urban company</a> in product management</p>
     </section>
 
     <section id="writings">
-        <h2>Writings</h2>
+        <h2>writings</h2>
         <iframe id="writingsFrame" src="https://docs.google.com/document/d/e/2PACX-1vTe6tPq55E6PUJ9kalBXOWHGQAtNz8ixg-4yi5z0bbJhGhbBnNtBQcNGh0iaqOTsqkjx8LyBP-WUlie/pub?embedded=true"></iframe>
     </section>
 
     <script>
         function showSection(sectionId) {
-            // Hide all sections
             document.querySelectorAll('section').forEach(section => {
                 section.classList.remove('active');
             });
-
-            // Show the selected section
             document.getElementById(sectionId).classList.add('active');
         }
 
-        // START GDOCS UNEMBEDDING SCRIPT
         var iframes = document.getElementsByTagName("iframe");
         for (let i = 0; i < iframes.length; i++) {
             var url = iframes[i].getAttribute("src");
-            console.log({ url });
             if (url.startsWith("https://docs.google.com/document/d/")) {
-                // create div and replace iframe
                 let d = document.createElement('div');
-                d.classList.add("embedded-doc"); // optional
+                d.classList.add("embedded-doc");
 
-                // CORS request
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, true);
                 xhr.onload = function () {
-                    // display response
                     d.innerHTML = xhr.responseText;
 
                     let scriptChildren = d.querySelectorAll('script');
-                    scriptChildren.forEach(script => {
-                        script.parentNode.removeChild(script);
-                    });
+                    scriptChildren.forEach(script => script.parentNode.removeChild(script));
 
                     let styleChildren = d.querySelectorAll('style');
                     styleChildren.forEach(style => {
@@ -179,7 +190,6 @@
                         style.innerHTML = lineSpacingFix;
                     });
 
-                    // Add max-width: 100% to all sub-elements of 'd'
                     let subElements = d.querySelectorAll('*');
                     subElements.forEach(element => {
                         element.style.maxWidth = '100%';
@@ -194,17 +204,6 @@
                 };
                 xhr.send();
             }
-        }
-
-        function removeSecretClass() {
-            const divs = document.querySelectorAll('#secret');
-            divs.forEach(div => {
-                if (div.classList.contains('secret')) {
-                    div.classList.remove('secret');
-                } else {
-                    div.classList.add('secret');
-                }
-            });
         }
     </script>
 
